@@ -1,0 +1,92 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+class {{class}} extends Model
+{
+    use HasFactory;
+
+    protected $fillable = [
+        {{issetPhoto}}
+        'photo_id',
+        {{endissetPhoto}}
+        {{issetPossession}}
+        'user_id',
+        {{endissetPossession}}
+        {{issetParent}}
+        'parent_id',
+        {{endissetParent}}
+
+    ];
+
+    {{issetPhoto}}
+    protected $appends = ['photo_url'];
+
+    public function getPhotoUrlAttribute()
+    {
+        return $this->photo?->url;
+    }
+
+    public function photo()
+    {
+        return $this->belongsTo(File::class, 'photo_id');
+    }
+    {{endissetPhoto}}
+
+    {{issetPossession}}
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+    {{endissetPossession}}
+
+    {{issetParent}}
+    public function children()
+    {
+        return  $this->hasMany({{class}}::class, 'parent_id');
+    }
+
+    public function childrenRecursive()
+    {
+        return $this->children()->with('childrenRecursive');
+    }
+
+    public function parentRecursive()
+    {
+        return $this->parent()->with('parentRecursive');
+    }
+
+    public function parent()
+    {
+        return $this->belongsTo({{class}}::class, 'parent_id');
+    }
+    {{endissetParent}}
+
+    static function schema()
+    {
+        Schema::create('{{table}}', function (Blueprint $table) {
+            $table->id();
+
+            {{issetPossession}}
+            $table->unsignedBigInteger('user_id');
+            $table->foreign('user_id')->references('id')->on('users');
+            {{endissetPossession}}
+
+            {{issetPhoto}}
+            $table->unsignedBigInteger('photo_id')->nullable();
+            $table->foreign('photo_id')->references('id')->on('files')->nullOnDelete();
+            {{endissetPhoto}}
+
+            {{issetParent}}
+            $table->unsignedInteger('parent_id')->nullable();
+            {{endissetParent}}
+
+            $table->timestamps();
+        });
+    }
+}

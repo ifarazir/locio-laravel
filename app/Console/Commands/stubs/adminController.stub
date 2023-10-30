@@ -1,0 +1,108 @@
+<?php
+
+namespace App\Http\Controllers\Admin;
+
+use App\Http\Controllers\Controller;
+use App\Http\Responses\Admin\{{class}}Response;
+use App\Models\{{class}};
+use App\ProtectionLayers\Ensure{{class}}IdExists;
+use App\Services\{{class}}\{{class}}Service;
+use Imanghafoori\HeyMan\Facades\HeyMan;
+use Imanghafoori\HeyMan\StartGuarding;
+{{issetUniqueInput}}
+    use Illuminate\Validation\Rule;
+{{endissetUniqueInput}}
+
+class {{class}}Controller extends Controller
+{
+    public function __construct()
+    {
+        Ensure{{class}}IdExists::install();
+
+        resolve(StartGuarding::class)->start();
+    }
+
+    public function index()
+    {
+        ${{table}} = {{class}}Service::new ()->allWithRelation();
+
+        return {{class}}Response::index(${{table}});
+    }
+
+    public function store()
+    {
+        $this->validateStoreForm(request());
+
+        $inputs = request()->only({{fillable}});
+
+        ${{name}} = {{class}}Service::new ()
+            ->create($inputs)
+            ->getOrSend([{{class}}Response::class, 'storeFailed']);
+
+        return {{class}}Response::store(${{name}});
+    }
+
+    {{issetApi}}
+        public function show($id)
+        {
+            HeyMan::checkPoint('Ensure{{class}}IdExists');
+
+            ${{name}} = {{class}}Service::new ()->findByIdWithRelation($id);
+
+            return {{class}}Response::show(${{name}});
+        }
+    {{endissetApi}}
+    {{issetHtml}}
+        public function edit($id)
+        {
+            HeyMan::checkPoint('Ensure{{class}}IdExists');
+
+            ${{name}} = {{class}}Service::new ()->findByIdWithRelation($id);
+
+            return {{class}}Response::edit(${{name}});
+        }
+    {{endissetHtml}}
+    public function update($id)
+    {
+        HeyMan::checkPoint('Ensure{{class}}IdExists');
+
+        {{issetUniqueInput}}
+            $this->validateUpdateForm(request(), $id);
+        {{endissetUniqueInput}}
+
+        {{isnotsetUniqueInput}}
+            $this->validateStoreForm(request());
+        {{endisnotsetUniqueInput}}
+
+        $inputs = request()->only({{fillable}});
+
+        ${{name}} = {{class}}Service::make({{class}}Service::new ()
+            ->findByIdWithRelation($id))
+            ->update($inputs)
+            ->getOrSend([{{class}}Response::class, 'updateFailed']);
+
+        return {{class}}Response::update(${{name}});
+    }
+
+    public function destroy($id)
+    {
+        HeyMan::checkPoint('Ensure{{class}}IdExists');
+
+        {{class}}Service::make({{class}}Service::new ()->findByIdWithRelation($id))->delete()
+            ->getOrSend([{{class}}Response::class, 'destroyFailed']);
+
+        return {{class}}Response::destroy();
+    }
+
+    protected function validateStoreForm($request)
+    {
+        return $request->validate({{validation}});
+    }
+
+    {{issetUniqueInput}}
+    protected function validateUpdateForm($request, $id)
+    {
+        return $request->validate({{updateValidation}});
+    }
+    {{endissetUniqueInput}}
+}

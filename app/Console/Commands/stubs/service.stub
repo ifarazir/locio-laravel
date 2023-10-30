@@ -1,0 +1,48 @@
+<?php
+
+namespace App\Services\{{class}};
+
+use App\Models\{{class}};
+{{issetPhoto}}
+    use App\Services\File\FileService;
+{{endissetPhoto}}
+use App\Services\ModelService;
+use Imanghafoori\Helpers\Nullable;
+
+class {{class}}Service extends ModelService
+{
+
+    public function __construct({{class}} ${{name}})
+    {
+        $this->setModel(${{name}});
+    }
+
+    public static function new()
+    {
+        return static::make(new {{class}}());
+    }
+
+    public static function make({{class}} ${{name}})
+    {
+        return new static(${{name}});
+    }
+
+    public function create(array $data = []): ?Nullable
+    {
+        return parent::create($data);
+    }
+
+    public function update($data = []): Nullable
+    {
+        return parent::update($data);
+    }
+
+    public function delete(): ?Nullable
+    {
+    {{issetPhoto}}
+        FileService::new ()->findByIdWithRelation($this->model->photo_id)->delete();
+    {{endissetPhoto}}
+
+        return parent::delete();
+    }
+}

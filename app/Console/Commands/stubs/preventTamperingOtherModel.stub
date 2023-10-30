@@ -1,0 +1,35 @@
+<?php
+
+namespace App\ProtectionLayers;
+
+use App\Http\Responses\User\{{class}}Response;
+use App\Services\{{class}}\{{class}}Service;
+use Imanghafoori\HeyMan\Facades\HeyMan;
+
+class PreventTamperingOther{{class}}
+{
+    public static function install()
+    {
+        HeyMan::onCheckPoint('PreventTamperingOther{{class}}')
+            ->thisMethodShouldAllow([static::class, 'check'])
+            ->otherwise()
+            ->afterCalling([self::class, 'react'])
+            ->weRespondFrom([{{class}}Response::class, 'invalid{{class}}Possession']);
+    }
+
+    public static function check()
+    {
+        $id = (int) request()->route()->parameter('{{name}}');
+
+        return {{class}}Service::new()->findByIdWithRelation((int)$id)->user_id == auth()->id();
+    }
+
+    public static function react()
+    {
+        \Log::alert('someone tried to access other congress {{table}}!', [
+            'user_id' => auth()->id(),
+            'route' => request()->route()->getName(),
+            '{{name}}_id' => request()->route()->parameter('{{name}}')
+        ]);
+    }
+}

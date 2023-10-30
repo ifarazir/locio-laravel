@@ -1,0 +1,54 @@
+<?php
+
+namespace App\Http\Responses\Admin\{{class}};
+use App\Http\Resources\Api\V1\{{class}}\{{class}}WithoutRelationResource;
+
+use Illuminate\Http\Response;
+
+class JsonResponses
+{
+    public function index(${{table}})
+    {
+        return response()->json(["status" => "success", "{{table}}" => {{class}}WithoutRelationResource::collection(${{table}})], Response::HTTP_OK);
+    }
+
+    public function invalid{{class}}Id()
+    {
+        return response()->json(["status" => "error", "message" => __('message.invalidId', ['model' => __('message.model.{{name}}')])], Response::HTTP_UNPROCESSABLE_ENTITY);
+    }
+
+    public function show(${{name}})
+    {
+        return response()->json(["status" => "success", "{{name}}" => {{class}}WithoutRelationResource::make(${{name}})], Response::HTTP_OK);
+    }
+
+    public function store(${{name}})
+    {
+        return response()->json(["status" => "success", "message" => __('message.store', ['model' => __('message.model.{{name}}')]), "{{name}}" => {{class}}WithoutRelationResource::make(${{name}})], Response::HTTP_CREATED);
+    }
+
+    public function update(${{name}})
+    {
+        return response()->json(["status" => "success", "message" => __('message.update', ['model' => __('message.model.{{name}}')]), "{{name}}" => {{class}}WithoutRelationResource::make(${{name}})], Response::HTTP_ACCEPTED);
+    }
+
+    public function destroy()
+    {
+        return response()->json(["status" => "success", "message" => __('message.destroy', ['model' => __('message.model.{{name}}')])], Response::HTTP_ACCEPTED);
+    }
+
+    public function storeFailed()
+    {
+        return response()->json(["status" => "error", "message" => __('message.storeFailed', ['model' => __('message.model.{{name}}')])], Response::HTTP_UNPROCESSABLE_ENTITY);
+    }
+
+    public function updateFailed()
+    {
+        return response()->json(["status" => "error", "message" => __('message.updateFailed', ['model' => __('message.model.{{name}}')])], Response::HTTP_UNPROCESSABLE_ENTITY);
+    }
+
+    public function destroyFailed()
+    {
+        return response()->json(["status" => "error", "message" => __('message.destroyFailed', ['model' => __('message.model.{{name}}')])], Response::HTTP_UNPROCESSABLE_ENTITY);
+    }
+}

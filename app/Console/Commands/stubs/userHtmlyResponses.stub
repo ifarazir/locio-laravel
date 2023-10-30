@@ -1,0 +1,56 @@
+<?php
+
+namespace App\Http\Responses\User\{{class}};
+
+class HtmlyResponses
+{
+public function index(${{table}})
+    {
+
+    }
+
+    public function invalid{{class}}Id()
+    {
+
+    }
+
+    public function show(${{name}})
+    {
+
+    }
+
+    public function store(${{name}})
+    {
+
+    }
+
+    public function update(${{name}})
+    {
+
+    }
+
+    public function destroy()
+    {
+
+    }
+
+    public function storeFailed()
+    {
+
+    }
+
+    public function updateFailed()
+    {
+
+    }
+
+    public function destroyFailed()
+    {
+
+    }
+
+    public function invalid{{class}}Possession()
+    {
+
+    }
+}

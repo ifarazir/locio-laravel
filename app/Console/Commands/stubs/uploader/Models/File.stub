@@ -1,0 +1,79 @@
+<?php
+
+namespace App\Models;
+
+use App\Services\Uploader\StorageManager;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\Storage;
+
+class File extends Model
+{
+    use HasFactory, SoftDeletes;
+
+    protected $fillable = [
+        'name',
+        'size',
+        'type',
+    ];
+
+    protected $appends = ['url'];
+
+    public function getUrlAttribute()
+    {
+        return $this->url();
+    }
+
+    public function url()
+    {
+        return asset('storage/' . $this->filePath());
+    }
+
+    public function absolutePath()
+    {
+        return resolve(StorageManager::class)->getAbsolutePathOf($this->name, $this->type, $this->is_private);
+    }
+
+    public function download()
+    {
+        return resolve(StorageManager::class)->getFile($this->name, $this->type, $this->is_private);
+    }
+
+    public function delete()
+    {
+        resolve(StorageManager::class)->deleteFile($this->name, $this->type, $this->is_private);
+
+        parent::delete();
+    }
+
+    public function softDelete()
+    {
+        parent::delete();
+    }
+
+    private function directoryPrefix($type, $name)
+    {
+        return $type . DIRECTORY_SEPARATOR . $name;
+    }
+
+    public function filePath()
+    {
+        return $this->type . DIRECTORY_SEPARATOR . $this->name;
+    }
+
+    static function schema()
+    {
+        return Schema::create('files', function (Blueprint $table) {
+            $table->id();
+            $table->string('name');
+            $table->integer('size');
+            $table->string('type');
+            $table->softDeletes();
+
+            $table->timestamps();
+        });
+    }
+}

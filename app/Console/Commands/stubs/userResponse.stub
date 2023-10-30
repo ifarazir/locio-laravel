@@ -1,0 +1,27 @@
+<?php
+
+namespace App\Http\Responses\User;
+
+use App\Http\Responses\User\{{class}}\HtmlyResponses;
+use App\Http\Responses\User\{{class}}\JsonResponses;
+use Illuminate\Support\Facades\Facade;
+
+class {{class}}Response extends Facade
+{
+    protected static function getFacadeAccessor()
+    {
+        $client = request('client');
+
+        $class = [
+            'mobile' => JsonResponses::class,
+            'web' => HtmlyResponses::class
+            {{issetApi}}
+        ][$client] ?? JsonResponses::class;
+            {{endissetApi}}
+            {{issetHtml}}
+        ][$client] ?? HtmlyResponses::class;
+            {{endissetHtml}}
+
+        return $class;
+    }
+}

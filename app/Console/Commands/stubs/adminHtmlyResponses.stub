@@ -1,0 +1,56 @@
+<?php
+
+namespace App\Http\Responses\Admin\{{class}};
+
+class HtmlyResponses
+{
+    public function index(${{table}})
+    {
+        return view('admin.{{table}}.index', compact('{{table}}'));
+    }
+
+    public function invalid{{class}}Id()
+    {
+        return redirect()->back()->with(['danger-custom' => __("{{class}} مورد نظر یافت نشد."), 'title' => 'عملیات با شکست مواجه شد']);
+    }
+
+    public function create()
+    {
+        return view('admin.{{table}}.create');
+    }
+
+    public function edit(${{name}})
+    {
+        return view('admin.{{table}}.edit', compact('{{name}}'));
+    }
+
+    public function store(${{name}})
+    {
+        return redirect()->route('admin.{{table}}.index')->with(['success-custom' => __("{{class}} با موفقیت ایجاد شد."), 'title' => 'test']);
+    }
+
+    public function update(${{name}})
+    {
+        return redirect()->route('admin.{{table}}.index')->with(['success-custom' => __("{{class}} با موفقیت ویرایش شد."), 'title' => 'test']);
+    }
+
+    public function destroy()
+    {
+        return redirect()->back()->with(['success-custom' => __("{{class}} با موفقیت حذف شد."), 'title' => 'test']);
+    }
+
+    public function storeFailed()
+    {
+        return redirect()->back()->with(['danger-custom' => __("در روند ایجاد {{class}} مشکلی پیش آمده است."), 'title' => 'عملیات با شکست مواجه شد']);
+    }
+
+    public function updateFailed()
+    {
+        return redirect()->back()->with(['danger-custom' => __("در روند ویرایش {{class}} مشکلی پیش آمده است."), 'title' => 'عملیات با شکست مواجه شد']);
+    }
+
+    public function destroyFailed()
+    {
+        return redirect()->back()->with(['danger-custom' => __("در روند حذف {{class}} مشکلی پیش آمده است."), 'title' => 'عملیات با شکست مواجه شد']);
+    }
+}

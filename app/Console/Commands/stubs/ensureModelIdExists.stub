@@ -1,0 +1,34 @@
+<?php
+
+namespace App\ProtectionLayers;
+
+use App\Http\Responses\Admin\{{class}}Response;
+use App\Services\{{class}}\{{class}}Service;
+use Imanghafoori\HeyMan\Facades\HeyMan;
+
+class Ensure{{class}}IdExists
+{
+    public static function install()
+    {
+        HeyMan::onCheckPoint('Ensure{{class}}IdExists')
+            ->thisMethodShouldAllow([static::class, 'check'])
+            ->otherwise()
+            ->afterCalling([self::class, 'react'])
+            ->weRespondFrom([{{class}}Response::class, 'invalid{{class}}Id']);
+    }
+
+    public static function check(): bool
+    {
+        $id = request()->route()->parameter('{{name}}');
+        return is_numeric($id) && {{class}}Service::new()->findByIdWithRelation((int)$id);
+    }
+
+    public static function react()
+    {
+        \Log::alert('Tried to access a non-existing {{name}}!', [
+            'user_id' => auth()->id(),
+            'route' => request()->route()->getName(),
+            '{{name}}_id' => request()->route()->parameter('{{name}}')
+        ]);
+    }
+}
