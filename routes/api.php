@@ -35,7 +35,7 @@ Route::post('/diaries', function (Request $request) {
         'name' => 'required|string',
         'email' => 'nullable|email',
     ]);
-    $data = request()->only(['file_id', 'cafe_id', 'name', 'email']);
+    $data = request()->only(['file_id', 'cafe_id', 'name', 'email']) + ['ip' => request()->ip()];
     $diary = Diary::create($data);
     return response()->json(["status" => "success", "diary" => $diary], Response::HTTP_CREATED);
 });
@@ -44,6 +44,9 @@ Route::get('/diaries/{cafe}', function (Cafe $cafe) {
     return response()->json(["status" => "success", "diaries" => $cafe->diaries], Response::HTTP_CREATED);
 });
 Route::get('/like/diary/{diary}', function (Diary $diary) {
+    if ($diary->ip == request()->ip()) {
+        return response()->json(["status" => "error", "message" => 'کاربر نمیتواند خاطره خود را لایک کند.'], Response::HTTP_BAD_REQUEST);
+    }
     if (!$diary->is_like) {
         \DB::table('diary_like')->insert([
             'diary_id' => $diary->id,

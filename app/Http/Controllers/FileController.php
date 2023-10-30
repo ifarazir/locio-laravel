@@ -10,6 +10,7 @@ use App\Services\Uploader\Uploader;
 use Illuminate\Http\Request;
 use Imanghafoori\HeyMan\Facades\HeyMan;
 use Imanghafoori\HeyMan\StartGuarding;
+use Illuminate\Http\Response;
 
 class FileController extends Controller
 {
@@ -50,9 +51,13 @@ class FileController extends Controller
         try {
             $this->validateFile($request);
             $file = $this->uploader->upload();
-            return FileResponse::store($file);
+            return response()->json(["status" => "success", "message" => 'فایل با موفقیت اپلود شد.', "file" => $file], Response::HTTP_CREATED);
+
+            // return FileResponse::store($file);
         } catch (\Exception $e) {
-            return FileResponse::storeFailed($e->getMessage());
+            return response()->json(["status" => "error", "message" => $e->getMessage()], Response::HTTP_UNPROCESSABLE_ENTITY);
+
+            // return FileResponse::storeFailed($e->getMessage());
         }
     }
     private function validateFile($request)

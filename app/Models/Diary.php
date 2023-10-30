@@ -17,7 +17,8 @@ class Diary extends Model
         'name',
         'email',
         'file_id',
-        'cafe_id'
+        'cafe_id',
+        'ip'
     ];
 
     protected $appends = ['file_url', 'likes_count', 'is_like'];
@@ -59,6 +60,7 @@ class Diary extends Model
             $table->unsignedBigInteger('cafe_id');
             $table->foreign('cafe_id')->references('id')->on('cafes')->cascadeOnDelete();
 
+            $table->string('ip')->nullable();
 
             $table->timestamps();
         });
