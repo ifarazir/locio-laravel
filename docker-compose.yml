@@ -3,8 +3,8 @@ services:
   app:
     build:
       args:
-        user: sammy
-        uid: 1000
+        user: locationalaudiostorytelling
+        uid: 1001
       context: ./
       dockerfile: Dockerfile
     image: locio
