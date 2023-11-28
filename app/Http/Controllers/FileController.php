@@ -63,7 +63,7 @@ class FileController extends Controller
     private function validateFile($request)
     {
         $request->validate([
-            'file' => ['required', 'file', 'mimetypes:image/jpeg,image/png,image/svg+xml,video/mp4,application/zip,audio/webm,audio/wav', 'audio/webm;codecs=opus']
+            'file' => ['required', 'file', 'mimetypes:image/jpeg,image/png,image/svg+xml,video/mp4,application/zip,audio/webm,audio/wav,audio/webm;codecs=opus',]
         ]);
     }
 }
