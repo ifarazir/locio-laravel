@@ -69,6 +69,7 @@ class Uploader
             'application/zip' => 'archive',
             'audio/webm' => 'audio',
             'audio/x-wav' => 'audio',
+            'audio/wave' => 'audio',
             'audio/wav' => 'audio',
             'audio/webm;codecs=opus' => 'audio'
         ][$this->file->getClientMimeType()];
