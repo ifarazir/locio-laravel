@@ -45,7 +45,7 @@ class Diary extends Model
 
     public function file(): BelongsTo
     {
-        return $this->belongsTo(file::class);
+        return $this->belongsTo(File::class);
     }
 
     static function schema()
