@@ -20,5 +20,13 @@ Route::get('/', function () {
 
 // route for show user ip
 Route::get('/user-ip', function (Request $request) {
-    dd($request);
+    // get user ip by forworded for header
+    $ip = $request->header('x-forwarded-for');
+    // if user ip is not set in header
+    if (!$ip) {
+        // get user ip by server remote address
+        $ip = $request->server('REMOTE_ADDR');
+    }
+    // return user ip
+    return $ip;
 });
