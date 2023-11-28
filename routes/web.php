@@ -16,3 +16,8 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+
+// route for show user ip
+Route::get('/user-ip', function ($request) {
+    return $request->ip();
+});
