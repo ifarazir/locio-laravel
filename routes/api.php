@@ -53,11 +53,11 @@ Route::get('/diaries/{cafe}', function (Cafe $cafe) {
     return response()->json(["status" => "success", "diaries" => $cafe->diaries], Response::HTTP_CREATED);
 });
 Route::get('/like/diary/{diary}', function (Diary $diary) {
-    $ip = $request->header('x-forwarded-for');
+    $ip = request()->header('x-forwarded-for');
     // if user ip is not set in header
     if (!$ip) {
         // get user ip by server remote address
-        $ip = $request->server('REMOTE_ADDR');
+        $ip = request()->server('REMOTE_ADDR');
     }
     // return user ip
     // slice before ,
