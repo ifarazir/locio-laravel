@@ -35,7 +35,16 @@ Route::post('/diaries', function (Request $request) {
         'name' => 'required|string',
         'email' => 'nullable|email',
     ]);
-    $data = request()->only(['file_id', 'cafe_id', 'name', 'email']) + ['ip' => request()->ip()];
+    $ip = $request->header('x-forwarded-for');
+    // if user ip is not set in header
+    if (!$ip) {
+        // get user ip by server remote address
+        $ip = $request->server('REMOTE_ADDR');
+    }
+    // return user ip
+    // slice before ,
+    $ip = explode(',', $ip)[0];
+    $data = request()->only(['file_id', 'cafe_id', 'name', 'email']) + ['ip' => $ip];
     $diary = Diary::create($data);
     return response()->json(["status" => "success", "diary" => $diary], Response::HTTP_CREATED);
 });
@@ -44,13 +53,22 @@ Route::get('/diaries/{cafe}', function (Cafe $cafe) {
     return response()->json(["status" => "success", "diaries" => $cafe->diaries], Response::HTTP_CREATED);
 });
 Route::get('/like/diary/{diary}', function (Diary $diary) {
-    if ($diary->ip == request()->ip()) {
+    $ip = $request->header('x-forwarded-for');
+    // if user ip is not set in header
+    if (!$ip) {
+        // get user ip by server remote address
+        $ip = $request->server('REMOTE_ADDR');
+    }
+    // return user ip
+    // slice before ,
+    $ip = explode(',', $ip)[0];
+    if ($diary->ip == $ip) {
         return response()->json(["status" => "error", "message" => 'کاربر نمیتواند خاطره خود را لایک کند.'], Response::HTTP_BAD_REQUEST);
     }
     if (!$diary->is_like) {
         \DB::table('diary_like')->insert([
             'diary_id' => $diary->id,
-            'ip' => request()->ip(),
+            'ip' => $ip,
             'created_at' => now()
         ]);
         return response()->json(["status" => "success", "diary" => $diary], Response::HTTP_CREATED);

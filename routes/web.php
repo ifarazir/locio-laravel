@@ -28,5 +28,7 @@ Route::get('/user-ip', function (Request $request) {
         $ip = $request->server('REMOTE_ADDR');
     }
     // return user ip
+    // slice before ,
+    $ip = explode(',', $ip)[0];
     return $ip;
 });
