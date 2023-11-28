@@ -18,6 +18,6 @@ Route::get('/', function () {
 });
 
 // route for show user ip
-Route::get('/user-ip', function ($request) {
+Route::get('/user-ip', function (Request $request) {
     return $request->ip();
 });
