@@ -67,7 +67,8 @@ class Uploader
             'image/png' => 'image',
             'application/zip' => 'archive',
             'audio/webm' => 'audio',
-            'audio/wav' => 'audio'
+            'audio/wav' => 'audio',
+            'audio/webm;codecs=opus' => 'audio'
         ][$this->file->getClientMimeType()];
     }
     private function isFileExists($name)
