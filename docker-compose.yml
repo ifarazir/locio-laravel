@@ -8,6 +8,8 @@ services:
       context: ./
       dockerfile: Dockerfile
     image: locio
+    ports:
+      - 9000:9000
     container_name: locio_app
     restart: unless-stopped
     working_dir: /var/www/
@@ -38,19 +40,6 @@ services:
     restart: unless-stopped
     environment:
       ALLOW_EMPTY_PASSWORD: yes
-    networks:
-      - locio_network
-
-  nginx:
-    image: nginx:alpine
-    container_name: locio_nginx
-    restart: unless-stopped
-    ports:
-      - 8080:80
-      - 8443:443
-    volumes:
-      - ./:/var/www
-      - ./docker-compose/nginx:/etc/nginx/conf.d/
     networks:
       - locio_network
 
