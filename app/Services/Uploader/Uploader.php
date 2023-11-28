@@ -63,6 +63,7 @@ class Uploader
             'image/jpeg' => 'image',
             'video/mp4' => 'video',
             'video/quicktime' => 'video',
+            'video/webm' => 'video',
             'image/svg+xml' => 'image',
             'image/png' => 'image',
             'application/zip' => 'archive',
