@@ -66,7 +66,7 @@ class FileController extends Controller
         Log::info('request file type: ' . $request->file->getMimeType());
 
         $request->validate([
-            'file' => ['required', 'file', 'mimetypes:image/jpeg,image/png,image/svg+xml,video/mp4,application/zip,audio/webm,audio/wav,video/webm,audio/webm;codecs=opus,audio/x-wav',]
+            'file' => ['required', 'file', 'mimetypes:image/jpeg,image/png,image/svg+xml,video/mp4,application/zip,audio/webm,audio/wav,audio/x-wav,video/webm,audio/webm;codecs=opus',]
         ]);
     }
 }
