@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use Imanghafoori\HeyMan\Facades\HeyMan;
 use Imanghafoori\HeyMan\StartGuarding;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Log;
 
 class FileController extends Controller
 {
