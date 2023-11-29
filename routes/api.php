@@ -50,7 +50,8 @@ Route::post('/diaries', function (Request $request) {
 });
 
 Route::get('/diaries/{cafe}', function (Cafe $cafe) {
-    return response()->json(["status" => "success", "diaries" => $cafe->diaries], Response::HTTP_CREATED);
+    // order desc
+    return response()->json(["status" => "success", "diaries" => $cafe->diaries()->orderBy('created_at', 'desc')->get()], Response::HTTP_CREATED);
 });
 Route::get('/like/diary/{diary}', function (Diary $diary) {
     $ip = request()->header('x-forwarded-for');
