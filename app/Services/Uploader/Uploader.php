@@ -70,6 +70,7 @@ class Uploader
             'audio/webm' => 'audio',
             'audio/x-wav' => 'audio',
             'audio/wave' => 'audio',
+            'audio/mp4' => 'audio',
             'audio/wav' => 'audio',
             'audio/webm;codecs=opus' => 'audio'
         ][$this->file->getClientMimeType()];
